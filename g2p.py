@@ -175,13 +175,13 @@ def mainApply(translator, options, output_file):
                     except StopIteration:
                         break
                     posterior = math.exp(logLik - nBest.logLikTotal)
-                    print(('%s\t%d\t%f\t%s' % \
-                          (word, nVariants, posterior, ' '.join(result))), file=output_file)
+                    output_file.stream.write('%s\t%d\t%f\t%s' % \
+                          (word, nVariants, posterior, ' '.join(result)))
                     totalPosterior += posterior
                     nVariants += 1
             else:
                 result = translator(left)
-                print(('%s\t%s' % (word, ' '.join(result))), file = output_file)
+                output_file.stream.write('%s\t%s' % (word, ' '.join(result)))
         except translator.TranslationFailure:
             exc = sys.exc_info()[1]
             try:
@@ -194,7 +194,7 @@ def mainApplyWord(translator, options, output_file):
     left = tuple(word)
     try:
         result = translator(left)
-        print(('%s\t%s' % (word, ' '.join(result))), file = output_file)
+        output_file.stream.write('%s\t%s' % (word, ' '.join(result)))
     except translator.TranslationFailure:
         exc = sys.exc_info()[1]
         try:
